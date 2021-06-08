@@ -8,6 +8,10 @@
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Hola" message:@"nil" preferredStyle:UIAlertControllerStyleAlert];
 
     UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    // Open URL 
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://twitter.com/ajbbocydia"] options:@{} completionHandler:nil];
+    
+    // // // //
       [[NSUserDefaults standardUserDefaults] setValue:@"AlreadyLaunch" forKey:@"FirstLaunch"];
       [[NSUserDefaults standardUserDefaults] synchronize];
      }];
