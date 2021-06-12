@@ -1,5 +1,27 @@
 #import <UIKit/UIKit.h>
 
+static UIViewController *_topMostController(UIViewController *cont) {
+    UIViewController *topController = cont;
+    while (topController.presentedViewController) {
+        topController = topController.presentedViewController;
+    }
+    if ([topController isKindOfClass:[UINavigationController class]]) {
+        UIViewController *visible = ((UINavigationController *)topController).visibleViewController;
+        if (visible) {
+            topController = visible;
+        }
+    }
+    return (topController != cont ? topController : nil);
+}
+static UIViewController *topMostController() {
+    UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *next = nil;
+    while ((next = _topMostController(topController)) != nil) {
+        topController = next;
+    }
+    return topController;
+}
+
 %hook UIApplication
 -(void)finishedTest:(id)arg1 extraResults:(id)arg2 {
 
@@ -24,7 +46,7 @@
     [alert addAction:twitter];
     [alert addAction:dismiss];
 
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:true completion:nil];
+    [topMostController() presentViewController:alert animated:true completion:nil];
 
 
   }
